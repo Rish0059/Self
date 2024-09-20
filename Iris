@@ -1,0 +1,20 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.neighbors import KNeighborsClassifier
+
+df = pd.read_csv('/kaggle/input/iris/Iris.csv')
+from sklearn.utils import shuffle
+df = shuffle(df)
+df1 = df.iloc[:75,:]
+df2 = df.iloc[75:,:]
+
+X_train=df1.drop(columns='Species')
+Y_train=df1['Species'].values
+df2=df2.drop(columns='Species')
+
+knn=KNeighborsClassifier(n_neighbors=3)
+knn.fit(X_train,Y_train)
+
+print(knn.predict(df2))
