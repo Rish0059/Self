@@ -1,0 +1,28 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.linear_model import LinearRegression
+
+df1 = pd.read_csv('/kaggle/input/house-prices-advanced-regression-techniques/train.csv')
+df2=pd.read_csv('/kaggle/input/house-prices-advanced-regression-techniques/test.csv')
+
+df = df1._append(df2,sort=False)
+
+df = pd.get_dummies(df)
+df = df.fillna(df.mean())
+
+X_train=df.drop(columns='SalePrice')
+Y_train=df['SalePrice'].values
+
+LR=LinearRegression().fit(X_train,Y_train)
+
+newTest = df.iloc[1460:2919]
+
+newTest = newTest.drop("SalePrice", axis=1) #Remove SalePrice column
+pred=(LR.predict(newTest))
+print(pred)
+pred = pd.DataFrame(pred)
+pred.index.name='Id'
+pred.columns=['SalePrice']
+pred.to_csv('/kaggle/working/submission.csv')
